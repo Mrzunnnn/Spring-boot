@@ -8,11 +8,10 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Student {
-    int id;
-    String name;
-    String address;
-    String numberphone;
-    int age;
-
+public class Product {
+     String id;
+     String name;
+     String description;
+     int price;
+     String brand;
 }
