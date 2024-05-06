@@ -1,11 +1,12 @@
 package vn.techmaster.demo.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import vn.techmaster.demo.model.Student;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@RestController
 public class StudentController {
     private final List<Student> students;
     public StudentController() {
