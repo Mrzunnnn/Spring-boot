@@ -41,7 +41,7 @@ public class ProductController {
 
     public ResponseEntity<Product> getProductById(@PathVariable String id) {
         for (Product product : products) {
-            if (product.getId().contains(id)) {
+            if (product.getId().equals(id)) {
                 return ResponseEntity.ok(product);
             }
         }
@@ -55,7 +55,7 @@ public class ProductController {
     public ResponseEntity<List<Product>> getProductByName(@PathVariable String prefix){
         List<Product> result = new ArrayList<>();
         for (Product product : products){
-            if (product.getName().toLowerCase().contains(prefix.toLowerCase())){
+            if (product.getName().toLowerCase().equals(prefix.toLowerCase())){
                 result.add(product);
             }
         }
@@ -108,3 +108,4 @@ public class ProductController {
             return ResponseEntity.ok(maxPrice);
     }
 }
+
