@@ -8,6 +8,8 @@ import vn.techmaster.demo.model.Product;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Repository
 public class ProductDAOImpl implements ProductDAO {
     @Override
@@ -17,62 +19,41 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     public Product findId(String id) {
-        for (Product product : ProductDB.products){
-            if (product.getId().equals(id)){
-                return product;
-            }
-        }
-        return null ;
+
+        return findAll().stream()
+                .filter(product -> product.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
     public List<Product> findName(String prefix) {
-        List<Product> result = new ArrayList<>();
-        for (Product product :ProductDB.products){
-            if (product.getName().toLowerCase().startsWith(prefix.toLowerCase())){
-                result.add(product);
-            }
-        }
-        return result;
+
+        return findAll().stream()
+                .filter(product -> product.getName().toLowerCase().startsWith(prefix.toLowerCase()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Product> findPrice(int min, int max) {
-        List<Product> result = new ArrayList<>();
-        for (Product product : ProductDB.products){
-            if (product.getPrice()>=min && product.getPrice()<=max){
-                result.add(product);
-            }
-        }
-        return result;
+
+        return findAll().stream()
+                .filter(product -> product.getPrice()>=min && product.getPrice() <= max)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Product> findBrand(String brand) {
-        List<Product> result = new ArrayList<>();
-        for (Product product :ProductDB.products){
-            if (product.getBrand().toLowerCase().equals(brand.toLowerCase())){
-             result.add(product);
-            }
-        }
-        return result;
+
+        return findAll().stream()
+                .filter(product -> product.getBrand().toLowerCase().equals(brand.toLowerCase()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public Product findMax(String brand) {
-        List<Product> result = new ArrayList<>();
-        for (Product product :ProductDB.products){
-            if (product.getBrand().toLowerCase().equals(brand.toLowerCase())){
-                result.add(product);
-            }
-        }
-        result.sort(new Comparator<Product>() {
-            @Override
-            public int compare(Product o1, Product o2) {
-                return o2.getPrice()- o1.getPrice();
-            }
-        });
-        Product maxPrice = result.get(0);
-        return maxPrice;
+        return findBrand(brand).stream()
+                .max((p1,p2)-> p1.getPrice()- p2.getPrice())
+                .orElse(null);
     }
 }

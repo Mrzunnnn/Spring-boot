@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vn.techmaster.demo.model.Product;
 import vn.techmaster.demo.service.ProductService;
+import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,8 +21,10 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
-        return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.CREATED);
+    public String getAllProducts(Model model) {
+        List<Product> products = productService.getAllProducts();
+        model.addAttribute("products",products);
+        return "AllProducts";
     }
 
 
@@ -29,59 +32,48 @@ public class ProductController {
 
     @GetMapping("/{id}")
 
-    public ResponseEntity<Product> getProductById(@PathVariable String id) {
+    public String getProductById(Model model,@PathVariable String id) {
         Product product = productService.getProductById(id);
-        if (product!=null){
-            return ResponseEntity.ok(product);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        model.addAttribute("products",product);
+        return "id";
     }
 
 
 
 
     @GetMapping("/name-starts/{prefix}")
-    public ResponseEntity<List<Product>> getProductByName(@PathVariable String prefix){
+    public String getProductByName(Model model,@PathVariable String prefix){
         List<Product> products = productService.getProductByName(prefix);
-        if (products!=null){
-            return ResponseEntity.ok(products);
-
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        model.addAttribute("products",products);
+        return "SearchPrefix";
     }
 
 
 
     @GetMapping("/price/{min}/{max}")
-    public ResponseEntity<List<Product>> getProductByPrice(@PathVariable int min,@PathVariable int max){
+    public String getProductByPrice(Model model,@PathVariable int min,@PathVariable int max){
         List<Product> products = productService.getProductByPrice(min,max);
-        if (products!=null){
-            return ResponseEntity.ok(products);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        model.addAttribute("products",products);
+        return "InRangePrice" ;
     }
 
 
 
 
     @GetMapping("/brand/{brand}")
-    public ResponseEntity<List<Product>> getProductBybrand(@PathVariable String brand){
+    public String getProductBybrand(Model model,@PathVariable String brand){
         List<Product> products = productService.getProductBybrand(brand);
-        if (products!=null){
-            return ResponseEntity.ok(products);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        model.addAttribute("products",products);
+        return "SearchBrand" ;
     }
 
 
 
     @GetMapping("/brand/{brand}/max-price")
-    public ResponseEntity<Product> getProductMaxPrice(@PathVariable String brand){
+    public String getProductMaxPrice(Model model,@PathVariable String brand){
         Product product = productService.getProductMaxPrice(brand);
-        if (product!=null){
-            return ResponseEntity.ok(product);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        model.addAttribute("products",product);
+        return "MaxProductPrice";
     }
 }
 
