@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  xmlns:th="https://www.thymeleaf.org">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,7 +10,7 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" th:href="@{web-assets/css/style.css}"/>
   </head>
   <body>
     <header>
@@ -55,7 +55,7 @@
               <div class="movie-poster rounded overflow-hidden">
                 <img src="https://image.tmdb.org/t/p/w342/1G978IJ2KDPl4Z4icZrxZTozb1v.jpg" alt="" />
               </div>
-              <p class="mt-2">Godzilla x Kong: The New Empire</p>
+              <p class="mt-2 ">Godzilla x Kong: The New Empire</p>
             </div>
           </div>
           <div class="col">

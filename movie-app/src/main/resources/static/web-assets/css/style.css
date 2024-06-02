@@ -32,9 +32,6 @@ img {
     border-radius: 50%;
 }
 
-body {
-    background-color: rgb(12, 11, 7);
-}
 
 .container {
     margin-top: 100px;
@@ -46,10 +43,12 @@ body {
 
 .login {
     width: 500px;
-    height: 300px;
+    height: 400px;
     background-color: rgb(114, 109, 109);
     margin-left: 30%;
 }
+
+
 
 .input-user input {
 
@@ -83,9 +82,5 @@ body {
     margin-left: 55%;
 }
 
-p{
-    color:white;
-}
-h2{
-    color: white;
-}
+
+
