@@ -35,10 +35,10 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-              <a class="nav-link text-white">Trang Chủ</a>
-              <a class="nav-link text-white">Phim lẻ</a>
-              <a class="nav-link text-white">Phim bộ</a>
-              <a class="nav-link text-white">Phim chiếu rạp</a>
+              <a href="/home" class="nav-link text-white">Trang Chủ</a>
+              <a href="/phim-le" class="nav-link text-white">Phim lẻ</a>
+              <a href="/phim-bo" class="nav-link text-white">Phim bộ</a>
+              <a href="/phim-chieu-rap" class="nav-link text-white">Phim chiếu rạp</a>
               <a class="nav-link text-white">Quốc gia </a>
               <a class="nav-link text-white">Thể loại</a>
             </div>
@@ -51,7 +51,7 @@
         <h2 class="text-uppercase">Phim bộ mới cập nhật</h2>
         <div class="row">
           <div class="col-2" th:each="movie : ${pageData.content}">
-            <a th:href="@{'/movies/' + ${movie.id}}">
+            <a  th:href="@{/phim/{id}/{slug} (id=${movie.id}, slug=${movie.slug})}">
               <div class="movie-item">
                 <div class="movie-poster rounded overflow-hidden">
                   <img th:src="${movie.poster}" alt="" />
@@ -64,17 +64,17 @@
 
         <nav aria-label="Page navigation" class="d-flex justify-content-center mt-3">
           <ul class="pagination">
-            <li class="page-item" th:classappend="${pageData.hasPrevious()} ? '' : 'disabled'">
-              <a class="page-link" th:if="${pageData.hasPrevious()}" th:href="@{/phim-bo(page=${pageData.number - 1}, limit=${pageData.size})}">Previous</a>
-              <span class="page-link" th:unless="${pageData.hasPrevious()}">Previous</span>
+            <li class="page-item" th:classappend="${CurrentPage == 1 ? 'disabled' : ''}">
+              <a class="page-link" th:href="@{/phim-bo(page=${CurrentPage - 1})}">Previous</a>
+
             </li>
             <li class="page-item" th:each="i : ${#numbers.sequence(1, pageData.totalPages)}"
-                th:classappend="${pageData.number + 1 == i} ? 'active'">
-              <a class="page-link" th:href="@{/phim-bo(page=${i}, limit=${pageData.size})}" th:text="${i}">1</a>
+                th:classappend="${CurrentPage == #numbers} ? 'active'">
+              <a class="page-link" th:href="@{/phim-bo(page=${i})}" th:text="${i}">1</a>
             </li>
-            <li class="page-item" th:classappend="${pageData.hasNext()} ? '' : 'disabled'">
-              <a class="page-link" th:if="${pageData.hasNext()}" th:href="@{/phim-bo(page=${pageData.number + 1}, limit=${pageData.size})}">Next</a>
-              <span class="page-link" th:unless="${pageData.hasNext()}">Next</span>
+            <li class="page-item" th:classappend="${CurrentPage == pageData.getTotalPages() ? 'disabled' : ''}">
+              <a class="page-link" th:if="${pageData.hasNext()}" th:href="@{/phim-bo(page=${CurrentPage + 1})}">Next</a>
+
             </li>
           </ul>
         </nav>

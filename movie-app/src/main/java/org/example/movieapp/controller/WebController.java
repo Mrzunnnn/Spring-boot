@@ -12,12 +12,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class WebController {
     private final WebService webService;
-    @GetMapping
+    @GetMapping("/home")
     public String getHomPage(Model model) {
+        List<Movie> dsPhimHot = webService.getHotMovie();
+        List<Movie>dsPhimBo = webService.findByType(MovieType.PHIM_BO,true,1,6).getContent();
+        List<Movie>dsPhimLe = webService.findByType(MovieType.PHIM_LE,true,1,6).getContent();
+        List<Movie>dsPhimChieuRap = webService.findByType(MovieType.PHIM_CHIEU_RAP,true,1,6).getContent();
+        model.addAttribute("dsphimBo",dsPhimBo);
+        model.addAttribute("dsphimLe",dsPhimLe);
+        model.addAttribute("dsPhimChieuRap",dsPhimChieuRap);
+        model.addAttribute("dsPhimHot",dsPhimHot);
         return "web/index";
     }
 
@@ -62,7 +72,14 @@ public class WebController {
     }
 
     @GetMapping("/phim/{id}/{slug}")
-    public String getMovieDatailsPage(@PathVariable int id, @PathVariable String slug, Model model) {
+    public String getMovieDetailsPage(Model model,
+                                      @PathVariable Integer id,
+                                      @PathVariable String slug) {
+        Movie movie = webService.findById(id,slug);
+        List<Movie> relatedMovies = webService.getRelatedMovies(movie);
+
+        model.addAttribute("movie", movie);
+        model.addAttribute("relatedMovies", relatedMovies);
         return "web/chi-tiet-phim";
     }
 }

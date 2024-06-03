@@ -35,10 +35,10 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-              <a class="nav-link text-white">Trang Chủ</a>
-              <a class="nav-link text-white">Phim lẻ</a>
-              <a class="nav-link text-white">Phim bộ</a>
-              <a class="nav-link text-white">Phim chiếu rạp</a>
+              <a href="/home" class="nav-link text-white">Trang Chủ</a>
+              <a href="/phim-le" class="nav-link text-white">Phim lẻ</a>
+              <a href="/phim-bo" class="nav-link text-white">Phim bộ</a>
+              <a href="/phim-chieu-rap" class="nav-link text-white">Phim chiếu rạp</a>
               <a class="nav-link text-white">Quốc gia </a>
               <a class="nav-link text-white">Thể loại</a>
             </div>
@@ -51,7 +51,7 @@
         <h2 class="text-uppercase">Phim Chiếu Rạp mới cập nhật</h2>
         <div class="row">
           <div class="col-2" th:each="movie : ${pageData.content}">
-            <a th:href="@{'/movies/' + ${movie.id}}">
+            <a  th:href="@{/phim/{id}/{slug} (id=${movie.id}, slug=${movie.slug})}">
               <div class="movie-item">
                 <div class="movie-poster rounded overflow-hidden">
                   <img th:src="${movie.poster}" alt="" />
