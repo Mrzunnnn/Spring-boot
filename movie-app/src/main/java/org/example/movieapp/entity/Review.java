@@ -19,11 +19,18 @@ public class Review {
     @Id
             @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    Integer userId;
-    Integer movieId;
     Integer rating;
     @Column(columnDefinition = "TEXT")
     String content;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    User user;
+
+    @ManyToOne
+    @JoinColumn(name="movie_id")
+    Movie movie;
+
 }

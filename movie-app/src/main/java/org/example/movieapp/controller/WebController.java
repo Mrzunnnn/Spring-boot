@@ -1,7 +1,9 @@
 package org.example.movieapp.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.movieapp.entity.Episode;
 import org.example.movieapp.entity.Movie;
+import org.example.movieapp.entity.Review;
 import org.example.movieapp.model.enums.MovieType;
 import org.example.movieapp.repository.MovieRepository;
 import org.example.movieapp.servive.WebService;
@@ -77,9 +79,12 @@ public class WebController {
                                       @PathVariable String slug) {
         Movie movie = webService.findById(id,slug);
         List<Movie> relatedMovies = webService.getRelatedMovies(movie);
-
+        List<Episode> episodes = webService.getEpisodes(movie.getId(),true);
+        List<Review> reviews = webService.getReviews(movie.getId());
+        model.addAttribute("episodes", episodes);
         model.addAttribute("movie", movie);
         model.addAttribute("relatedMovies", relatedMovies);
+        model.addAttribute("reviews", reviews);
         return "web/chi-tiet-phim";
     }
 }

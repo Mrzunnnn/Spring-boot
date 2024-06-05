@@ -12,7 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @SpringBootTest
 class MovieAppApplicationTests {
@@ -28,13 +30,57 @@ class MovieAppApplicationTests {
     private DirectorRespository directorRespository;
     @Autowired
     private ActorRespository actorRespository;
+    @Autowired
+    private EpisodeRespository episodeRespository;
+    @Autowired
+    private ReviewRespository reviewRespository;
 
     @Test
     void save_movies() {
         Faker faker = new Faker();
         Slugify slugify = Slugify.builder().build();
+        Random rd = new Random();
+
+        /// Lấy tất cả   đối tượng liên quan
+
+        List<Country> countries = countryRespository.findAll();
+        List<Genre> genres = genreRespository.findAll();
+        List<Director> directors = directorRespository.findAll();
+        List<Actor> actors = actorRespository.findAll();
 
         for (int i = 0; i < 100; i++) {
+            //random 1 country
+            Country rdCountry = countries.get(rd.nextInt(countries.size()));
+
+            //random 2-3 thể loại
+            List<Genre> rdGenres = new ArrayList<>();
+            for (int j = 0; j < rd.nextInt(2)+1; j++) {
+                Genre rdGenre = genres.get(rd.nextInt(genres.size()));
+                if (!rdGenres.contains(rdGenre)) {
+                    rdGenres.add(rdGenre);
+                }
+            }
+
+
+            //5-7 dien vien
+            List<Actor> rdActors = new ArrayList<>();
+            for (int j = 0; j < rd.nextInt(3)+5; j++) {
+                Actor rdActor = actors.get(rd.nextInt(actors.size()));
+                if (!rdActors.contains(rdActor)) {
+                    rdActors.add(rdActor);
+                }
+            }
+
+            //1-2 dao dien
+            List<Director> rdDirectors = new ArrayList<>();
+            for (int j = 0; j < rd.nextInt(2)+1; j++) {
+                Director rdDirector = directors.get(rd.nextInt(directors.size()));
+                if (!rdDirectors.contains(rdDirector)) {
+                    rdDirectors.add(rdDirector);
+                }
+            }
+
+
             String name = faker.book().title();
             Boolean status = faker.bool().bool();
             Movie movie = Movie.builder()
@@ -50,8 +96,78 @@ class MovieAppApplicationTests {
                     .createdAt(LocalDateTime.now())
                     .updatedAt(LocalDateTime.now())
                     .publishedAt(status ? LocalDateTime.now() : null)
+                    .country(rdCountry)
+                    .genres(rdGenres)
+                    .actors(rdActors)
+                    .directors(rdDirectors)
                     .build();
             movieRepository.save(movie);
+        }
+    }
+
+    @Test
+    void save_episode(){
+        List<Movie> movies = movieRepository.findAll();
+
+        for (Movie movie : movies) {
+            if (movie.getType().equals(MovieType.PHIM_BO)){
+                // tạo nhiều tập phim
+                Random rd = new Random();
+                for (int i = 0; i < rd.nextInt(6)+5; i++) {
+                    Episode episode = Episode.builder()
+                            .name("Tập " + (i+1))
+                            .duration(50)
+                            .trailerUrl("https://videos.pexels.com/video-files/3209828/3209828-hd_1280_720_25fps.mp4")
+                            .displayOrder(i+1)
+                            .status(true)
+                            .createdAt(LocalDateTime.now())
+                            .updatedAt(LocalDateTime.now())
+                            .publishedAt(LocalDateTime.now())
+                            .movie(movie)
+                            .build();
+                    episodeRespository.save(episode);
+                    }
+
+            }
+            else {
+                Episode episode = Episode.builder()
+                        .name("Tập Full")
+                        .duration(90)
+                        .trailerUrl("https://videos.pexels.com/video-files/3209828/3209828-hd_1280_720_25fps.mp4")
+                        .displayOrder(1)
+                        .status(true)
+                        .createdAt(LocalDateTime.now())
+                        .updatedAt(LocalDateTime.now())
+                        .publishedAt(LocalDateTime.now())
+                        .movie(movie)
+                        .build();
+                episodeRespository.save(episode);
+
+            }
+        }
+    }
+
+    @Test
+    void save_review(){
+        Random rd = new Random();
+        Faker faker = new Faker();
+        List<Movie> movies = movieRepository.findAll();
+        List<User> users = userRespository.findAll();
+
+        for (Movie movie : movies) {
+            // Random 5 -> 10 reviews
+            for (int i = 0; i < rd.nextInt(6) + 5; i++) {
+                User rdUser = users.get(rd.nextInt(users.size()));
+                Review review = Review.builder()
+                        .content(faker.lorem().paragraph())
+                        .rating(rd.nextInt(6) + 5)
+                        .createdAt(LocalDateTime.now())
+                        .updatedAt(LocalDateTime.now())
+                        .movie(movie)
+                        .user(rdUser)
+                        .build();
+                reviewRespository.save(review);
+            }
         }
     }
 

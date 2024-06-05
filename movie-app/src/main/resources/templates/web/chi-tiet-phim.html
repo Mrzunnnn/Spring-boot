@@ -60,33 +60,47 @@
             <div class="col-9">
                 <h4 class="mb-2" th:text="${movie.name}"></h4>
                 <div class=".bg-dark-subtle p-4">
-                    <p class="mb-2">Thể loại : hành động,Phiêu lưu,Viễn tưởng</p>
+                    <p class="mb-2">Thể loại :
+                        <span th:each="genre, iterStat : ${movie.genres}">
+                            <span th:text="${genre.genre}"></span>
+                            <span th:if="${!iterStat.last}">, </span>
+                        </span>
+                    </p>
                     <p class="mb-2">Năm sản xuất :
                         <th:block th:text="${movie.releaseYear}"></th:block>
                     </p>
-                    <p class="mb-2">Quốc gia : Mỹ</p>
-                    <p class="mb-2">Đạo Diễn :</p>
+                    <p class="mb-2">Quốc gia :
+                        <th:block th:text="${movie.country.name}"></th:block>
+                    </p>
+                    <p class="mb-2">Đạo Diễn :
+                        <span th:each="director, iterStat : ${movie.directors}">
+                            <span th:text="${director.name}"></span>
+                            <span th:if="${!iterStat.last}">, </span>
+                        </span>
+                    </p>
+                    <p class="mb-2">Diễn Viên :
+                        <span th:each="actor, iterStat : ${movie.actors}">
+                            <span th:text="${actor.name}"></span>
+                            <span th:if="${!iterStat.last}">, </span>
+                        </span>
+                    </p>
                     <p class="mb-2">Mô Tả :
                         <th:block th:text="${movie.description}"></th:block>
                     </p>
-                    <button class="btn btn-danger px-5">Xem phim</button>
+                    <a class="btn btn-danger px-5">Xem phim</a>
                     <button class="btn btn-dark px-5">Thêm vào yêu thích</button>
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" th:if="${movie.type.toString()=='PHIM_BO'}">
             <h3 class="text-uppercase mt-4 mb-3">Danh sách tập phim</h3>
         </div>
-        <button class="btn btn-dark">Tập 1</button>
-        <button class="btn btn-dark">Tập 2</button>
-        <button class="btn btn-dark">Tập 3</button>
-        <button class="btn btn-dark">Tập 4</button>
-        <button class="btn btn-dark">Tập 5</button>
-        <button class="btn btn-dark">Tập 6</button>
-        <button class="btn btn-dark">Tập 7</button>
-        <button class="btn btn-dark">Tập 8</button>
-        <button class="btn btn-dark">Tập 9</button>
-        <button class="btn btn-dark">Tập 10</button>
+        <div class="episodeList">
+        <div class="episodeItem" th:each="episode,iterStat:${episodes}">
+            <a th:href="@{/xem-phim/{id}/{slug}?tap={episode} (id=${movie.id}, slug=${movie.slug},episode=${episode})}"
+               th:text="'Tập ' + ${iterStat.index + 1}" class="btn btn-dark"></a>
+        </div>
+        </div>
     </div>
 </section>
 <section class="py-4 bg-body-tertiary">
@@ -111,76 +125,18 @@
 <section class="py-4">
     <div class="container">
         <h3 class="text-uppercase mb-3">Bình Luận</h3>
-        <div class="review-list">
+        <div class="review-list" th:each="review : ${reviews}">
             <div class="review-item d-flex mb-3 ">
                 <div class="review-avatar">
-                    <img src="https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg" alt=""/>
+                    <img  th:src="${review.user.avatar}" alt=""/>
                 </div>
                 <div class="review-info ps-3">
                     <p class="mb-0">
-                        <span class="fw-bold">Nguyen Van A</span>
-                        <span class="fst-italic text-muted">(26/5/2024)</span>
+                        <span class="fw-bold" th:text="${review.user.name}"></span>
+                        <span class="fst-italic text-muted" th:text="${review.createdAt}"></span>
                     </p>
-                    <p class="mb-0">4 <span class="text-warning">⭐</span></p>
-                    <p class="mb-0">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
-                        corporis sunt reiciendis quisquam, praesentium hic id cum ab
-                        corrupti recusandae possimus distinctio ratione sit molestias
-                        nobis, atque a dolor necessitatibus?
-                    </p>
-                </div>
-            </div>
-            <div class="review-item d-flex mb-3 ">
-                <div class="review-avatar">
-                    <img src="https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg" alt=""/>
-                </div>
-                <div class="review-info ps-3">
-                    <p class="mb-0">
-                        <span class="fw-bold">Nguyen Van A</span>
-                        <span class="fst-italic text-muted">(26/5/2024)</span>
-                    </p>
-                    <p class="mb-0">4 <span class="text-warning">⭐</span></p>
-                    <p class="mb-0">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
-                        corporis sunt reiciendis quisquam, praesentium hic id cum ab
-                        corrupti recusandae possimus distinctio ratione sit molestias
-                        nobis, atque a dolor necessitatibus?
-                    </p>
-                </div>
-            </div>
-            <div class="review-item d-flex mb-3 ">
-                <div class="review-avatar">
-                    <img src="https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg" alt=""/>
-                </div>
-                <div class="review-info ps-3">
-                    <p class="mb-0">
-                        <span class="fw-bold">Nguyen Van A</span>
-                        <span class="fst-italic text-muted">(26/5/2024)</span>
-                    </p>
-                    <p class="mb-0">4 <span class="text-warning">⭐</span></p>
-                    <p class="mb-0">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
-                        corporis sunt reiciendis quisquam, praesentium hic id cum ab
-                        corrupti recusandae possimus distinctio ratione sit molestias
-                        nobis, atque a dolor necessitatibus?
-                    </p>
-                </div>
-            </div>
-            <div class="review-item d-flex mb-3 ">
-                <div class="review-avatar">
-                    <img src="https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg" alt=""/>
-                </div>
-                <div class="review-info ps-3">
-                    <p class="mb-0">
-                        <span class="fw-bold">Nguyen Van A</span>
-                        <span class="fst-italic text-muted">(26/5/2024)</span>
-                    </p>
-                    <p class="mb-0">4 <span class="text-warning">⭐</span></p>
-                    <p class="mb-0">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
-                        corporis sunt reiciendis quisquam, praesentium hic id cum ab
-                        corrupti recusandae possimus distinctio ratione sit molestias
-                        nobis, atque a dolor necessitatibus?
+                    <p class="mb-0"><th:block th:text="${review.rating}"></th:block> <span class="text-warning">⭐</span></p>
+                    <p class="mb-0" th:text="${review.content}">
                     </p>
                 </div>
             </div>

@@ -64,14 +64,14 @@
                             <img th:src="${movie.poster}" alt=""/>
                         </div>
                         <p class="mt-2" th:text="${movie.name}"></p>
-                    </div>x
+                    </div>
                 </a>
             </div>
         </div>
         <div class="container">
             <div class="d-flex justify-content-between align-item-center">
                 <h2 class="text-uppercase">Phim lẻ mới cập nhật</h2>
-                <a href="#">Xem Thêm</a>
+                <a href="/phim-le">Xem Thêm</a>
             </div>
             <div class="row">
                 <div class="col-2" th:each="movie : ${dsphimLe}">
@@ -89,7 +89,7 @@
         <div class="container">
             <div class="d-flex justify-content-between align-item-center">
                 <h2 class="text-uppercase">Phim Bộ mới cập nhật</h2>
-                <a href="#">Xem Thêm</a>
+                <a href="/phim-bo">Xem Thêm</a>
             </div>
             <div class="row">
                 <div class="col-2" th:each="movie : ${dsphimBo}">
@@ -107,7 +107,7 @@
         <div class="container">
             <div class="d-flex justify-content-between align-item-center">
                 <h2 class="text-uppercase">Phim chiếu rạp mới cập nhật</h2>
-                <a href="#">Xem Thêm</a>
+                <a href="/phim-chieu-rap">Xem Thêm</a>
             </div>
             <div class="row">
                 <div class="col-2" th:each="movie : ${dsPhimChieuRap}">

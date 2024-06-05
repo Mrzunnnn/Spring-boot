@@ -1,8 +1,6 @@
 package org.example.movieapp.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,7 +17,13 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Favorite {
     @Id
-    Integer userId;
-    Integer movieId;
     LocalDateTime createdAt;
+
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    User user;
+
+    @ManyToOne
+    @JoinColumn(name="movie_id")
+    Movie movie;
 }

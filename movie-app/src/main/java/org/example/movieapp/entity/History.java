@@ -19,9 +19,21 @@ public class History {
     @Id
             @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    Integer movieId;
-    Integer userId;
+
     Double duration;
-    Integer episode;
+
     LocalDateTime createdAt;
+
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    User user;
+
+    @ManyToOne
+    @JoinColumn(name="movie_id")
+    Movie movie;
+
+    @ManyToOne
+    @JoinColumn(name="episode_id")
+    Episode episode;
+
 }

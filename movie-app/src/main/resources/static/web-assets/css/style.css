@@ -92,3 +92,12 @@ img {
 .owl-carousel .next-carousel:hover {
     background-position: -24px -53px;
 }
+
+
+.episodeList {
+    display: flex;
+    flex-direction: row;
+}
+
+.episodeItem{
+}

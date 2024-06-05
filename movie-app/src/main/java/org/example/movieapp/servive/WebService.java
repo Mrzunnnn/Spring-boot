@@ -1,11 +1,15 @@
 package org.example.movieapp.servive;
 
 
+import org.example.movieapp.entity.Episode;
 import org.example.movieapp.entity.Movie;
+import org.example.movieapp.entity.Review;
 import org.example.movieapp.model.enums.MovieType;
+import org.example.movieapp.repository.EpisodeRespository;
 import org.example.movieapp.repository.MovieRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.example.movieapp.repository.ReviewRespository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +22,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebService {
     private final MovieRepository movieRepository;
+    private final EpisodeRespository episodeRespository;
+    private final ReviewRespository reviewRespository;
 
     public Page<Movie> findByType(MovieType type, Boolean status, Integer page, Integer limit) {
         Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("publishedAt").descending());
@@ -36,4 +42,13 @@ public class WebService {
     public List<Movie> getRelatedMovies(Movie movie) {
       return movieRepository.findTop6ByTypeAndStatusAndIdNotOrderByRatingDesc(movie.getType(), true, movie.getId());
     };
+
+    public List<Episode> getEpisodes(Integer movieId,Boolean status) {
+        return episodeRespository.findByMovie_IdAndStatusOrderByDisplayOrderAsc(movieId,true);
+    }
+
+    public List<Review> getReviews(Integer movieId) {
+        return reviewRespository.findByMovie_IdOrderByCreatedAtDesc(movieId);
+    }
+
 }
