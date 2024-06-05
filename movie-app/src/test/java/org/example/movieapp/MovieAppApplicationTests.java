@@ -34,6 +34,10 @@ class MovieAppApplicationTests {
     private EpisodeRespository episodeRespository;
     @Autowired
     private ReviewRespository reviewRespository;
+    @Autowired
+    private HistoryRespository historyRespository;
+    @Autowired
+    private FavoriteRespository favoriteRespository;
 
     @Test
     void save_movies() {
@@ -261,21 +265,65 @@ class MovieAppApplicationTests {
         }
     }
 
+//    @Test
+//    void movie_methods_test() {
+//        //SELECT
+//        //SELECT ALL
+//        List<Movie> movies = movieRepository.findAll();
+//        System.out.println("movies size " + movies.size());
+//
+//        List<Movie> movieByIds = movieRepository.findAllById(List.of(1, 2, 3));
+//
+//        Movie movie = movieRepository.findById(1).orElse(null);
+//
+//        movie.setName("Đào,Phở,Piano");
+//        movieRepository.save(movie);
+//
+//
+//    }
+
     @Test
-    void movie_methods_test() {
-        //SELECT
-        //SELECT ALL
-        List<Movie> movies = movieRepository.findAll();
-        System.out.println("movies size " + movies.size());
+    void save_history(){
+        Random rd = new Random();
+        Faker faker = new Faker();
+        List<Movie> movie = movieRepository.findAll();
+        List<User> users = userRespository.findAll();
+        List<Episode> episodes = episodeRespository.findAll();
+        for(User user : users){
+            for (int i = 0; i < rd.nextInt(2)+1; i++) {
+                Episode rdepisode = episodes.get(rd.nextInt(episodes.size()));
+                Movie rdMovie = movie.get(rd.nextInt(movie.size()));
+                History history = History.builder()
+                        .duration(rd.nextDouble())
+                        .episode(rdepisode)
+                        .createdAt(LocalDateTime.now())
+                        .user(user)
+                        .movie(rdMovie)
+                        .build();
+                historyRespository.save(history);
 
-        List<Movie> movieByIds = movieRepository.findAllById(List.of(1, 2, 3));
-
-        Movie movie = movieRepository.findById(1).orElse(null);
-
-        movie.setName("Đào,Phở,Piano");
-        movieRepository.save(movie);
-
+            }
+        }
 
     }
 
+    @Test
+    void save_favorite(){
+        Random rd = new Random();
+        Faker faker = new Faker();
+        List<Movie> movie = movieRepository.findAll();
+        List<User> users = userRespository.findAll();
+        for(User user : users){
+            for (int i = 0; i < rd.nextInt(6)+5; i++) {
+                Movie movies = movie.get(rd.nextInt(movie.size()));
+                Favorite favorite = Favorite.builder()
+                        .user(user)
+                        .movie(movies)
+                        .createdAt(LocalDateTime.now())
+                        .build();
+                favoriteRespository.save(favorite);
+
+            }
+        }
+    }
 }
