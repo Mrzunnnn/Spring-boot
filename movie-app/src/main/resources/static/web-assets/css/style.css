@@ -93,11 +93,19 @@ img {
     background-position: -24px -53px;
 }
 
-
-.episodeList {
-    display: flex;
-    flex-direction: row;
+.rating {
+    font-size: 30px;
+    cursor: pointer;
+    display: inline-block;
 }
 
-.episodeItem{
+.star {
+    display: inline-block;
 }
+
+.star:hover,
+.star.active {
+    color: #EDBB0E;
+}
+
+

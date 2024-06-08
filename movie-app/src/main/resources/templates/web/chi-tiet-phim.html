@@ -4,13 +4,23 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title th:text="${movie.name}">Bootstrap demo</title>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
             rel="stylesheet"
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
             crossorigin="anonymous"
     />
-    <link rel="stylesheet" th:href="@{web-assets/css/style.css}"/>
+
+
+    <link rel="stylesheet" th:href="@{/web-assets/css/style.css}"/>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
 <header>
@@ -87,19 +97,20 @@
                     <p class="mb-2">Mô Tả :
                         <th:block th:text="${movie.description}"></th:block>
                     </p>
-                    <a class="btn btn-danger px-5">Xem phim</a>
+                    <a class="btn btn-danger px-"
+                       th:href="@{/xem-phim/{id}/{slug}?tap='1'(id=${movie.id},slug=${movie.slug})}">Xem phim</a>
                     <button class="btn btn-dark px-5">Thêm vào yêu thích</button>
                 </div>
             </div>
         </div>
         <div class="row" th:if="${movie.type.toString()=='PHIM_BO'}">
             <h3 class="text-uppercase mt-4 mb-3">Danh sách tập phim</h3>
-        </div>
-        <div class="episodeList">
-        <div class="episodeItem" th:each="episode,iterStat:${episodes}">
-            <a th:href="@{/xem-phim/{id}/{slug}?tap={episode} (id=${movie.id}, slug=${movie.slug},episode=${episode})}"
-               th:text="'Tập ' + ${iterStat.index + 1}" class="btn btn-dark"></a>
-        </div>
+            <div class="d-flex  ">
+                <div class="" th:each="episode,iterStat:${episodes}">
+                    <a th:href="@{/xem-phim/{id}/{slug}?tap={episode} (id=${movie.id}, slug=${movie.slug},episode=${episode})}"
+                       th:text="'Tập ' + ${iterStat.index + 1}" class="btn btn-dark"></a>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -124,18 +135,90 @@
 </section>
 <section class="py-4">
     <div class="container">
-        <h3 class="text-uppercase mb-3">Bình Luận</h3>
+        <div class="d-flex justify-content-between align-items-center">
+            <h3 class="text-uppercase mb-3">Bình Luận</h3>
+
+
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalReview">
+                Bình Luận
+            </button>
+
+
+            <div class="modal fade" id="modalReview" th:data-movie-id="${movie.id}" data-bs-backdrop="static"
+                 data-bs-keyboard="false" tabindex="-1"
+                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Viết bình luận</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="d-flex flex-column justify-content-center align-items-center">
+                                <div class="rating">
+                                    <span class="star" data-rating="1">
+                                          <i class="fa-solid fa-star"></i>
+                                     </span>
+                                    <span class="star" data-rating="2">
+                                          <i class="fa-solid fa-star"></i>
+                                     </span>
+                                    <span class="star" data-rating="3">
+                                          <i class="fa-solid fa-star"></i>
+                                    </span>
+                                    <span class="star" data-rating="4">
+                                          <i class="fa-solid fa-star"></i>
+                                    </span>
+                                    <span class="star" data-rating="5">
+                                          <i class="fa-solid fa-star"></i>
+                                    </span>
+                                    <span class="star" data-rating="6">
+                                          <i class="fa-solid fa-star"></i>
+                                    </span>
+                                    <span class="star" data-rating="7">
+                                          <i class="fa-solid fa-star"></i>
+                                    </span>
+                                    <span class="star" data-rating="8">
+                                          <i class="fa-solid fa-star"></i>
+                                    </span>
+                                    <span class="star" data-rating="9">
+                                          <i class="fa-solid fa-star"></i>
+                                    </span>
+                                    <span class="star" data-rating="10">
+                                          <i class="fa-solid fa-star"></i>
+                                    </span>
+                                </div>
+                                <div id="rating-value">Vui lòng chọn đánh giá</div>
+                            </div>
+                            <form id="form-review">
+                                <div class="mb-3">
+                                    <textarea class="form-control" id="review-content" rows="5"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-primary">Gửi Bình luận</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p>Vui lòng <a href="/dang-nhap" class="text-decoration-unline">đăng nhập</a> để viết bình luận</p>
+
+
         <div class="review-list" th:each="review : ${reviews}">
             <div class="review-item d-flex mb-3 ">
                 <div class="review-avatar">
-                    <img  th:src="${review.user.avatar}" alt=""/>
+                    <img th:src="${review.user.avatar}" alt=""/>
                 </div>
                 <div class="review-info ps-3">
                     <p class="mb-0">
                         <span class="fw-bold" th:text="${review.user.name}"></span>
                         <span class="fst-italic text-muted" th:text="${review.createdAt}"></span>
                     </p>
-                    <p class="mb-0"><th:block th:text="${review.rating}"></th:block> <span class="text-warning">⭐</span></p>
+                    <p class="mb-0">
+                        <th:block th:text="${review.rating}"></th:block>
+                        <span class="text-warning">⭐</span></p>
                     <p class="mb-0" th:text="${review.content}">
                     </p>
                 </div>
@@ -190,10 +273,20 @@
         </div>
     </div>
 </footer>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
 <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"
 ></script>
+<script th:inline="javascript">
+    const movieId = [[${movie}]];
+</script>
+<script src="/web-assets/js/movie-review.js"></script>
 </body>
 </html>

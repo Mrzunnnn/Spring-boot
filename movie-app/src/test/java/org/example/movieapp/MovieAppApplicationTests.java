@@ -322,7 +322,6 @@ class MovieAppApplicationTests {
                         .createdAt(LocalDateTime.now())
                         .build();
                 favoriteRespository.save(favorite);
-
             }
         }
     }
