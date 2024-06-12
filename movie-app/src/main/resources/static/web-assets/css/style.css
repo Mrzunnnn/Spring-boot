@@ -109,3 +109,54 @@ img {
 }
 
 
+.login .input-user {
+    margin-bottom: 20px;
+}
+
+.login .input-user ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.login .input-user li {
+    margin-bottom: 15px;
+}
+
+.login .input-user input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.checkbox {
+    margin-bottom: 20px;
+}
+
+.checkbox .form-check-input {
+    margin-right: 5px;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+.link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.link a {
+    color: #007bff;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.link a:hover {
+    text-decoration: underline;
+}
+

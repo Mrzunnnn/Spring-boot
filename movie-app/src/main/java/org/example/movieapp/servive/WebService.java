@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -49,6 +50,12 @@ public class WebService {
 
     public List<Review> getReviews(Integer movieId) {
         return reviewRespository.findByMovie_IdOrderByCreatedAtDesc(movieId);
+    }
+
+    public Optional<Episode> getEpisode(Integer movieId, Boolean status, String tap) {
+        Integer coverTap = tap.equals("full") ? 1 : Integer.parseInt(tap);
+      return episodeRespository
+              .findByMovie_IdAndStatusAndDisplayOrder(movieId,true,1);
     }
 
 }

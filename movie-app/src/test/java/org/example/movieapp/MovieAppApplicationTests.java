@@ -9,6 +9,7 @@ import org.example.movieapp.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -38,6 +39,10 @@ class MovieAppApplicationTests {
     private HistoryRespository historyRespository;
     @Autowired
     private FavoriteRespository favoriteRespository;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Test
     void save_movies() {
@@ -323,6 +328,15 @@ class MovieAppApplicationTests {
                         .build();
                 favoriteRespository.save(favorite);
             }
+        }
+    }
+
+    @Test
+    void  encode_password_user(){
+        List<User> users = userRespository.findAll();
+        for(User user : users){
+            user.setPassword(passwordEncoder.encode("123"));
+            userRespository.save(user);
         }
     }
 }

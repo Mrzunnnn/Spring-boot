@@ -64,6 +64,15 @@
 <section class="py-4">
     <div class="container">
         <div class="row">
+            <div class="col-12">
+                <video width="100%" controls>
+                    <source th:src="${currentEpisode.trailerUrl}" type="video/mp4">
+                </video>
+
+            </div>
+
+        </div>
+        <div class="row">
             <div class="col-3">
                 <div class="movie-poster rounded overflow-hidden">
                     <img
@@ -102,18 +111,7 @@
                     <p class="mb-2">Mô Tả :
                         <th:block th:text="${movie.description}"></th:block>
                     </p>
-                    <th:block th:if="${movie.type.toString() == 'PHIM_BO' && episodes.size() > 0}">
-                        <a class="btn btn-danger px-5"
-                           th:href="@{/xem-phim/{id}/{slug} (id=${movie.id}, slug=${movie.slug}, tap=${episodes.get(0).displayOrder})}">
-                            Xem phim</a>
-                    </th:block>
 
-                    <th:block
-                            th:if="${(movie.type.toString() == 'PHIM_LE' || movie.type.toString() == 'PHIM_CHIEU_RAP') && episodes.size() > 0}">
-                        <a class="btn btn-danger px-5"
-                           th:href="@{/xem-phim/{id}/{slug} (id=${movie.id}, slug=${movie.slug}, tap='full')}">
-                            Xem phim</a>
-                    </th:block>
                     <button class="btn btn-dark px-5">Thêm vào yêu thích</button>
                 </div>
             </div>
@@ -122,8 +120,10 @@
             <h3 class="text-uppercase mt-4 mb-3">Danh sách tập phim</h3>
             <div class="d-flex ">
                 <div class="me-1" th:each="episode,iterStat:${episodes}">
-                    <a th:href="@{/xem-phim/{id}/{slug} (id=${movie.id}, slug=${movie.slug}, tap=${episode.displayOrder})}"
-                       th:text="'Tập ' + ${iterStat.index + 1}" class="btn btn-dark"></a>
+                    <a class="btn me-2" th:href="@{/xem-phim/{id}/{slug} (id=${movie.id}, slug=${movie.slug}, tap=${episode.displayOrder})}"
+                       th:text="'Tập ' + ${iterStat.index + 1}"
+                       th:classappend="${currentEpisode.displayOrder == episode.displayOrder ?'btn-primary' : 'btn-dark'}">
+                    </a>
                 </div>
             </div>
         </div>
@@ -221,36 +221,38 @@
         <p>Vui lòng <a href="/dang-nhap" class="text-decoration-unline">đăng nhập</a> để viết bình luận</p>
 
 
-        <div class="review-list">
-            <!--            <div class="review-item d-flex mb-3 ">-->
-            <!--                <div class="review-avatar">-->
-            <!--                    <img th:src="${review.user.avatar}" alt=""/>-->
-            <!--                </div>-->
-            <!--                <div class="review-info ps-3">-->
-            <!--                    <p class="mb-0">-->
-            <!--                        <span class="fw-bold" th:text="${review.user.name}"></span>-->
-            <!--                        <span class="fst-italic text-muted">-->
-            <!--                            (<th:block th:text="${#temporals.format(review.createdAt, 'dd/MM/yyyy')}"></th:block>)-->
-            <!--                        </span>-->
-            <!--                    </p>-->
-            <!--                    <p class="mb-0">-->
-            <!--                        <th:block th:text="${review.rating}"></th:block>-->
-            <!--                        <span class="text-warning">⭐</span></p>-->
-            <!--                    <p class="mb-0" th:text="${review.content}">-->
-            <!--                    </p>-->
-            <!--                    <div>-->
-            <!--                        <button th:onclick="|openModalUpdate(${review.id})|"-->
-            <!--                                class="text-primary border-0 bg-transparent text-decoration-underline me-1">Sửa-->
-            <!--                        </button>-->
-            <!--                        <button th:onclick="|deleteReview(${review.id})|"-->
-            <!--                                class="text-danger border-0 bg-transparent text-decoration-underline me-1">-->
-            <!--                            Xoá-->
-            <!--                        </button>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--            </div>-->
+        <div class="review-list" th:each="review : ${reviews}">
+            <div class="review-item d-flex mb-3 ">
+                <div class="review-avatar">
+                    <img th:src="${review.user.avatar}" alt=""/>
+                </div>
+                <div class="review-info ps-3">
+                    <p class="mb-0">
+                        <span class="fw-bold" th:text="${review.user.name}"></span>
+                        <span class="fst-italic text-muted">
+                                        (<th:block
+                                th:text="${#temporals.format(review.createdAt, 'dd/MM/yyyy')}"></th:block>)
+                                    </span>
+                    </p>
+                    <p class="mb-0">
+                        <th:block th:text="${review.rating}"></th:block>
+                        <span class="text-warning">⭐</span></p>
+                    <p class="mb-0" th:text="${review.content}">
+                    </p>
+                    <div>
+                        <button th:onclick="|openModalUpdate(${review.id})|"
+                                class="text-primary border-0 bg-transparent text-decoration-underline me-1">Sửa
+                        </button>
+                        <button th:onclick="|deleteReview(${review.id})|"
+                                class="text-danger border-0 bg-transparent text-decoration-underline me-1">
+                            Xoá
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="pagination" class="d-flex justify-content-center"></div>
+        <!--        <div class="pagination" class="d-flex justify-content-center"></div>-->
+
     </div>
 </section>
 <footer class="navbar navbar-expand-lg bg-black">

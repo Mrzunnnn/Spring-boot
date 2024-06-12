@@ -8,7 +8,8 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UpdateReviewRequest {
-    String content;
-    Integer rating;
+public class LoginRequest {
+    String email;
+    String password;
+
 }

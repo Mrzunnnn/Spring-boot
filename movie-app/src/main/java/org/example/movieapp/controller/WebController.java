@@ -7,6 +7,7 @@ import org.example.movieapp.entity.Review;
 import org.example.movieapp.model.enums.MovieType;
 import org.example.movieapp.repository.MovieRepository;
 import org.example.movieapp.servive.WebService;
+import org.springframework.boot.web.servlet.filter.OrderedFormContentFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,11 +16,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
 public class WebController {
     private final WebService webService;
+    private final OrderedFormContentFilter formContentFilter;
+
     @GetMapping("/home")
     public String getHomPage(Model model) {
         List<Movie> dsPhimHot = webService.getHotMovie();
@@ -86,5 +90,34 @@ public class WebController {
         model.addAttribute("relatedMovies", relatedMovies);
         model.addAttribute("reviews", reviews);
         return "web/chi-tiet-phim";
+    }
+
+    @GetMapping("/xem-phim/{id}/{slug}")
+    public String getMovieStreamingDetailsPage(Model model,
+                                      @PathVariable Integer id,
+                                      @RequestParam String tap,
+                                      @PathVariable String slug) {
+
+        // Trả về thông tin phim
+        Movie movie = webService.findById(id,slug);
+
+
+        // Lấy ra thông tin tập phim cần xem
+        Optional<Episode> currentEpisode = webService.getEpisode(movie.getId(), true,tap);
+
+        // trả về ds tập phim liên quan
+        List<Movie> relatedMovies = webService.getRelatedMovies(movie);
+
+        // trả về danh sách tập phim
+        List<Episode> episodes = webService.getEpisodes(movie.getId(),true);
+
+        //trả về danh sách bình luận
+        List<Review> reviews = webService.getReviews(movie.getId());
+        model.addAttribute("episodes", episodes);
+        model.addAttribute("movie", movie);
+        model.addAttribute("relatedMovies", relatedMovies);
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("currentEpisode", currentEpisode.orElse(null));
+        return "web/xem-phim";
     }
 }
