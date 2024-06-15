@@ -1,11 +1,12 @@
 package org.example.movieapp.controller;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.example.movieapp.entity.Episode;
-import org.example.movieapp.entity.Movie;
-import org.example.movieapp.entity.Review;
+import org.example.movieapp.entity.*;
 import org.example.movieapp.model.enums.MovieType;
 import org.example.movieapp.repository.MovieRepository;
+import org.example.movieapp.servive.FavoriteService;
+import org.example.movieapp.servive.ReviewService;
 import org.example.movieapp.servive.WebService;
 import org.springframework.boot.web.servlet.filter.OrderedFormContentFilter;
 import org.springframework.data.domain.Page;
@@ -23,8 +24,10 @@ import java.util.Optional;
 public class WebController {
     private final WebService webService;
     private final OrderedFormContentFilter formContentFilter;
+    private final FavoriteService favoriteService;
+    private final HttpSession session;
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String getHomPage(Model model) {
         List<Movie> dsPhimHot = webService.getHotMovie();
         List<Movie>dsPhimBo = webService.findByType(MovieType.PHIM_BO,true,1,6).getContent();
@@ -82,9 +85,14 @@ public class WebController {
                                       @PathVariable Integer id,
                                       @PathVariable String slug) {
         Movie movie = webService.findById(id,slug);
+        User user = (User) session.getAttribute("currentUser");
         List<Movie> relatedMovies = webService.getRelatedMovies(movie);
         List<Episode> episodes = webService.getEpisodes(movie.getId(),true);
         List<Review> reviews = webService.getReviews(movie.getId());
+        if (user != null){
+            boolean isFavorite  = favoriteService.isFavorite(id);
+            model.addAttribute("isFavorite",isFavorite);
+        }
         model.addAttribute("episodes", episodes);
         model.addAttribute("movie", movie);
         model.addAttribute("relatedMovies", relatedMovies);
@@ -97,7 +105,7 @@ public class WebController {
                                       @PathVariable Integer id,
                                       @RequestParam String tap,
                                       @PathVariable String slug) {
-
+        User user = (User) session.getAttribute("currentUser");
         // Trả về thông tin phim
         Movie movie = webService.findById(id,slug);
 
@@ -113,11 +121,27 @@ public class WebController {
 
         //trả về danh sách bình luận
         List<Review> reviews = webService.getReviews(movie.getId());
+
+        //
+
+        if (user != null){
+            boolean isFavorite  = favoriteService.isFavorite(id);
+            model.addAttribute("isFavorite",isFavorite);
+        }
+
+
         model.addAttribute("episodes", episodes);
         model.addAttribute("movie", movie);
         model.addAttribute("relatedMovies", relatedMovies);
         model.addAttribute("reviews", reviews);
         model.addAttribute("currentEpisode", currentEpisode.orElse(null));
         return "web/xem-phim";
+    }
+
+    @GetMapping("/phim-yeu-thich")
+    public String getFavoritePage(Model model) {
+        List<Favorite> favorites = favoriteService.getAllFavoritesByCurrentUser();
+        model.addAttribute("favorites", favorites);
+        return "web/phim-yeu-thich";
     }
 }

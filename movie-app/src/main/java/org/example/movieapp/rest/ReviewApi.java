@@ -1,5 +1,6 @@
 package org.example.movieapp.rest;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.example.movieapp.entity.Review;
 import org.example.movieapp.model.request.CreatReviewRequest;

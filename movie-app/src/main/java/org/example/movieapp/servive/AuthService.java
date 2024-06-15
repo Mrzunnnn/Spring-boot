@@ -11,17 +11,19 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final UserRespository userRespository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final UserRespository userRepository;
     private final HttpSession session;
-    public void login(LoginRequest request) {
-        User user = userRespository.findByEmail(request.getEmail())
-                .orElseThrow(()-> new RuntimeException("User not found"));
 
-        if (!bCryptPasswordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Wrong password");
+    public void login(LoginRequest request) {
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Password is incorrect");
         }
 
-        session.setAttribute("CurrentUser", user);
+        // TODO: Luu thong tin user vao session, cookie, database, ...
+        session.setAttribute("currentUser", user);
     }
 }

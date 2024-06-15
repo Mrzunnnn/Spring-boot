@@ -1,6 +1,9 @@
 package org.example.movieapp.servive;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.example.movieapp.config.AuthenticationInterceptor;
 import org.example.movieapp.entity.Movie;
 import org.example.movieapp.entity.Review;
 import org.example.movieapp.entity.User;
@@ -19,12 +22,13 @@ public class ReviewService {
     private final ReviewRespository reviewRespository;
     private final UserRespository userRespository;
     private final MovieRepository movieRepository;
+    private final HttpSession session;
+
 
     //TODO : Validation hướng dẫn sau (SpringBoot Validation).
     public Review createReview(CreatReviewRequest request) {
         //TODO: Fix user. Về sau user chính là user đang đăng nhập.
-        Integer userId = 1;
-        User user = userRespository.findById(userId).orElseThrow(()->new RuntimeException("user not found"));
+        User user = (User) session.getAttribute("currentUser");
         Movie movie = movieRepository.findById(request.getMovieId()).orElseThrow(() -> new RuntimeException("movie not found"));
         Review review = Review.builder()
                 .content(request.getContent())
@@ -41,9 +45,7 @@ public class ReviewService {
     public Review updateReview(Integer id,UpdateReviewRequest request) {
         Review review = reviewRespository.findById(id)
                 .orElseThrow(()->new RuntimeException("Review not found"));
-        //TODO: Fix user. Về sau user chính là user đang đăng nhập.
-        Integer userId = 1;
-        User user = userRespository.findById(userId).orElseThrow(()->new RuntimeException("user not found"));
+        User user = (User) session.getAttribute("currentUser");
         if (!review.getUser().getId().equals(user.getId())) {
             throw new RuntimeException("you can't update this review ");
         }
@@ -59,8 +61,7 @@ public class ReviewService {
         Review review = reviewRespository.findById(id)
                 .orElseThrow(()->new RuntimeException("Review not found"));
         //TODO: Fix user. Về sau user chính là user đang đăng nhập.
-        Integer userId = 1;
-        User user = userRespository.findById(userId).orElseThrow(()->new RuntimeException("user not found"));
+        User user = (User) session.getAttribute("currentUser");
         if (!review.getUser().getId().equals(user.getId())) {
             throw new RuntimeException("you can't delete this review ");
         }

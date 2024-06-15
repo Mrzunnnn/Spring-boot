@@ -40,14 +40,39 @@
             >
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a href="/home" class="nav-link text-white">Trang Chủ</a>
+                    <a href="/" class="nav-link text-white">Trang Chủ</a>
                     <a href="/phim-le" class="nav-link text-white">Phim lẻ</a>
                     <a href="/phim-bo" class="nav-link text-white">Phim bộ</a>
                     <a href="/phim-chieu-rap" class="nav-link text-white">Phim chiếu rạp</a>
                     <a class="nav-link text-white">Quốc gia </a>
                     <a class="nav-link text-white">Thể loại</a>
+                </div>
+
+                <div>
+                    <a th:if="${session.currentUser == null}" class="text-white" href="/login">Đăng nhập</a>
+                        <div class="dropdown" th:if="${session.currentUser != null}">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false" th:text="${session.currentUser.name}"></button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li th:if="${session.currentUser.type.toString()=='ADMIN'}">
+                                    <a class="dropdown-item"  href="/admin">Trang quản trị</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">Thông tin tài khoản</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"  href="/phim-yeu-thich">Phim ưu thích</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"  href="#">Lịch sử xem phim</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"  href="#">Đăng xuất</a>
+                                </li>
+                            </ul>
+                        </div>
                 </div>
             </div>
         </div>
@@ -75,7 +100,7 @@
             </div>
             <div class="row">
                 <div class="col-2" th:each="movie : ${dsphimLe}">
-                    <a  th:href="@{/phim/{id}/{slug} (id=${movie.id}, slug=${movie.slug})}">
+                    <a th:href="@{/phim/{id}/{slug} (id=${movie.id}, slug=${movie.slug})}">
                         <div class="movie-item">
                             <div class="movie-poster rounded overflow-hidden">
                                 <img th:src="${movie.poster}" alt=""/>
@@ -93,7 +118,7 @@
             </div>
             <div class="row">
                 <div class="col-2" th:each="movie : ${dsphimBo}">
-                    <a  th:href="@{/phim/{id}/{slug} (id=${movie.id}, slug=${movie.slug})}">
+                    <a th:href="@{/phim/{id}/{slug} (id=${movie.id}, slug=${movie.slug})}">
                         <div class="movie-item">
                             <div class="movie-poster rounded overflow-hidden">
                                 <img th:src="${movie.poster}" alt=""/>
@@ -111,7 +136,7 @@
             </div>
             <div class="row">
                 <div class="col-2" th:each="movie : ${dsPhimChieuRap}">
-                    <a  th:href="@{/phim/{id}/{slug} (id=${movie.id}, slug=${movie.slug})}">
+                    <a th:href="@{/phim/{id}/{slug} (id=${movie.id}, slug=${movie.slug})}">
                         <div class="movie-item">
                             <div class="movie-poster rounded overflow-hidden">
                                 <img th:src="${movie.poster}" alt=""/>

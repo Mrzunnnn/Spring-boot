@@ -222,5 +222,6 @@ const openModalUpdate = (id) =>{
     highlightStars(currentRating);
     contentEl.value = review.content;
 }
+render(reviews);
 
 

@@ -10,6 +10,9 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
     })
         .then(response => {
             toastr.success('Đăng nhập thành công!');
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1000);
         })
         .catch(error => {
             toastr.error('Đăng nhập thất bại. Vui lòng kiểm tra lại tài khoản hoặc mật khẩu.');
