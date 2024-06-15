@@ -144,4 +144,11 @@ public class WebController {
         model.addAttribute("favorites", favorites);
         return "web/phim-yeu-thich";
     }
+    @GetMapping("/thong-tin-ca-nhan")
+    public String getUser(Model model) {
+        User user = (User) session.getAttribute("currentUser");
+        model.addAttribute("user", user);
+        return "web/thong-tin-ca-nhan";
+    }
+
 }

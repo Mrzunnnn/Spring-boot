@@ -180,3 +180,13 @@ img {
 .movie-item span i:hover {
     color: blue;
 }
+
+
+#avatar {
+    display: block;
+    max-width: 150px;
+    max-height: 150px;
+    width: auto;
+    height: auto;
+    margin-bottom: 10px;
+}

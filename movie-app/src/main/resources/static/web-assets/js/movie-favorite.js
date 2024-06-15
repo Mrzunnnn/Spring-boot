@@ -35,7 +35,6 @@ btnFavorite.addEventListener('click',function (){
 })
 
 
-document.addEventListener('DOMContentLoaded', function () {
     const favoriteList = document.getElementById('favorite-list');
 
     console.log(favoriteList);
@@ -50,4 +49,3 @@ document.addEventListener('DOMContentLoaded', function () {
             removeFromFavorite(favoriteId);
         }
     });
-});
