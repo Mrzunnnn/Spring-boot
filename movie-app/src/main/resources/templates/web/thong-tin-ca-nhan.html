@@ -80,7 +80,7 @@
 <section class="py-4">
     <div class="container">
         <h2 class="text-uppercase mb-4">Thông tin cá nhân</h2>
-        <form id="form">
+        <form id="form-update-user">
             <div class="mb-3">
                 <label for="avatar" class="form-label">Ảnh đại diện</label>
                 <img th:src="${session.currentUser.avatar}" alt="Avatar" id="avatar">
@@ -94,7 +94,7 @@
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" th:value="${session.currentUser.email}" disabled>
             </div>
-            <button type="submit" class="btn btn-primary">Cập Nhật</button>
+            <button type="submit" class="btn btn-primary" id="btn-update">Cập Nhật</button>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalUpdatePassword">
                 Thay đôi mật khẩu
             </button>
@@ -108,21 +108,40 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="oldPassword" class="form-label">Mật khẩu cũ</label>
-                                <textarea class="form-control" id="oldPassword" rows="1"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="newPassword" class="form-label">Mật khẩu mới</label>
-                                <textarea class="form-control" id="newPassword" rows="1"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="newPasswordAgain" class="form-label">Xác nhận mật khẩu mới</label>
-                                <textarea class="form-control" id="newPasswordAgain" rows="1"></textarea>
-                            </div>
+                            <form id="form-update-password">
+                                <div class="form-group mb-3">
+                                    <label for="oldPassword" class="form-label">Mật khẩu cũ</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="oldPassword" name="oldPassword">
+                                        <span class="input-group-text">
+                                <i class="fa-regular fa-eye"></i>
+                            </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="newPassword" name="newPassword">
+                                        <span class="input-group-text">
+                                <i class="fa-regular fa-eye"></i>
+                            </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="confirmPassword" class="form-label">Mật khẩu xác nhận</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+                                        <span class="input-group-text">
+                                <i class="fa-regular fa-eye"></i>
+                            </span>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">Thay đổi</button>
+                            <button type="button" class="btn btn-primary" id="btn-update-password">Thay đổi</button>
                         </div>
                     </div>
                 </div>

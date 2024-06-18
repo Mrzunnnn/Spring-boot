@@ -2,11 +2,14 @@ package org.example.movieapp.servive;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.movieapp.config.AuthenticationInterceptor;
 import org.example.movieapp.entity.Movie;
 import org.example.movieapp.entity.Review;
 import org.example.movieapp.entity.User;
+import org.example.movieapp.model.exception.BadRequestException;
+import org.example.movieapp.model.exception.ResourceNotFoundException;
 import org.example.movieapp.model.request.CreatReviewRequest;
 import org.example.movieapp.model.request.UpdateReviewRequest;
 import org.example.movieapp.repository.MovieRepository;
@@ -42,12 +45,12 @@ public class ReviewService {
         return review;
     }
 
-    public Review updateReview(Integer id,UpdateReviewRequest request) {
+    public Review updateReview(@Valid Integer id, UpdateReviewRequest request) {
         Review review = reviewRespository.findById(id)
-                .orElseThrow(()->new RuntimeException("Review not found"));
+                .orElseThrow(()->new ResourceNotFoundException("Review not found"));
         User user = (User) session.getAttribute("currentUser");
         if (!review.getUser().getId().equals(user.getId())) {
-            throw new RuntimeException("you can't update this review ");
+            throw new BadRequestException("you can't update this review ");
         }
         review.setContent(request.getContent());
         review.setRating(request.getRating());
@@ -57,13 +60,13 @@ public class ReviewService {
         return review;
     }
 
-    public void deleteReview(Integer id) {
+    public void deleteReview(@Valid Integer id) {
         Review review = reviewRespository.findById(id)
-                .orElseThrow(()->new RuntimeException("Review not found"));
+                .orElseThrow(()->new ResourceNotFoundException("Review not found"));
         //TODO: Fix user. Về sau user chính là user đang đăng nhập.
         User user = (User) session.getAttribute("currentUser");
         if (!review.getUser().getId().equals(user.getId())) {
-            throw new RuntimeException("you can't delete this review ");
+            throw new BadRequestException("you can't delete this review ");
         }
         reviewRespository.delete(review);
 

@@ -1,5 +1,6 @@
 package org.example.movieapp.rest;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.movieapp.model.request.LoginRequest;
 import org.example.movieapp.servive.AuthService;
@@ -16,7 +17,7 @@ public class AuthApi {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request){
+    public ResponseEntity<?> login(@Valid  @RequestBody LoginRequest request){
         authService.login(request);
         return ResponseEntity.ok().build();
     }

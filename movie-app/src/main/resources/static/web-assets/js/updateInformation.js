@@ -1,112 +1,14 @@
-document.getElementById('form').addEventListener('submit', function (event) {
-    event.preventDefault();
-
-
-    const nameUpdate = document.getElementById("name");
-
-    const Userdata = {
-        name: nameUpdate.value.trim(),
-    };
-
-    axios.put(`/api/users/update-profile`, Userdata)
-        .then(response => {
-            toastr.success("Cập nhật thành công!");
-
-
-            nameUpdate.value = response.data.name;
-        })
-        .catch(error => {
-            console.error(error);
-            toastr.error("Cập nhật không thành công!");
-        });
-
-});
-
-document.getElementById('modalUpdatePassword').addEventListener('submit', function (event) {
-    event.preventDefault();
-
-
-    const oldPassword = document.getElementById("oldPassword");
-    const newPassword = document.getElementById("newPassword");
-    const newPasswordAgain = document.getElementById("newPasswordAgain");
-
-    const Userdata = {
-        oldpassword: oldPassword.value.trim(),
-        newPassword : newPassword.value.trim(),
-        newPasswordAgain : newPasswordAgain.value.trim(),
-    };
-
-    axios.put(`/api/users/update-Password`, Userdata)
-        .then(response => {
-            toastr.success("Cập nhật thành công!");
-
-
-            newPasswordAgain.value = response.data.name;
-        })
-        .catch(error => {
-            console.error(error);
-            toastr.error("Cập nhật không thành công!");
-        });
-
-});
-
-
-
-$('modalUpdatePassword').validate({
-    rules: {
-        password: {
-            required: true,
-            minlength: 6,
-        },
-        confirmPassword: {
-            required: true,
-            equalTo: "#password"
-        }
-    },
-    messages: {
-        password: {
-            required: "Mật khẩu không được để trống",
-            minlength: "Mật khẩu phải có ít nhất 6 ký tự",
-        },
-        confirmPassword: {
-            required: "Mật khẩu không được để trống",
-            equalTo: "Mật khẩu không khớp"
-        },
-    },
-    errorElement: 'span',
-    errorPlacement: function (error, element) {
-        error.addClass('invalid-feedback');
-        element.closest('.form-group').append(error);
-    },
-    highlight: function (element, errorClass, validClass) {
-        $(element).addClass('is-invalid');
-    },
-    unhighlight: function (element, errorClass, validClass) {
-        $(element).removeClass('is-invalid');
-    }
-
-});
-
-
-$('#form').validate({
+// Xử lý validate form
+$('#form-update-user').validate({
     rules: {
         name: {
             required: true
-        },
-        email: {
-            required: true,
-            email: true,
         },
     },
     messages: {
         name: {
             required: "Tên user không được để trống"
         },
-        email: {
-            required: "Email không được để trống",
-            email: "Email không đúng định dạng"
-        }
-
     },
     errorElement: 'span',
     errorPlacement: function (error, element) {
@@ -120,3 +22,98 @@ $('#form').validate({
         $(element).removeClass('is-invalid');
     }
 });
+
+// Xử lý submit form
+const btnUpdate = document.getElementById('btn-update');
+const nameEl = document.getElementById('name');
+btnUpdate.addEventListener('click', () => {
+    if (!$('#form-update-user').valid()) return;
+
+    const data = {
+        name: nameEl.value,
+    }
+    axios.put("/api/users/update-profile", data)
+        .then(res => {
+            toastr.success("Cập nhật thông tin thành công");
+        })
+        .catch(err => {
+            toastr.error("Cập nhật thông tin thất bại");
+        })
+})
+
+// Xử lý đổi mật khẩu
+$('#form-update-password').validate({
+    rules: {
+        oldPassword: {
+            required: true,
+        },
+        newPassword: {
+            required: true,
+        },
+        confirmPassword: {
+            required: true,
+            equalTo: "#newPassword"
+        }
+    },
+    messages: {
+        oldPassword: {
+            required: "Mật khẩu cũ không được để trống",
+        },
+        newPassword: {
+            required: "Mật khẩu mới không được để trống",
+        },
+        confirmPassword: {
+            required: "Mật khẩu xác nhận không được để trống",
+            equalTo: "Mật khẩu không khớp"
+        }
+    },
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+        error.addClass('invalid-feedback');
+        element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-invalid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+        $(element).removeClass('is-invalid');
+    }
+});
+
+// Xử lý submit form
+const btnUpdatePassword = document.getElementById('btn-update-password');
+const oldPasswordEl = document.getElementById('oldPassword');
+const newPasswordEl = document.getElementById('newPassword');
+const confirmPasswordEl = document.getElementById('confirmPassword');
+btnUpdatePassword.addEventListener('click', () => {
+    if (!$('#form-update-password').valid()) return;
+
+    const data = {
+        oldPassword: oldPasswordEl.value,
+        newPassword: newPasswordEl.value,
+        confirmPassword: confirmPasswordEl.value,
+    }
+    axios.put("/api/users/update-Password", data)
+        .then(res => {
+            toastr.success("Cập nhật mật khẩu thành công");
+        })
+        .catch(err => {
+            toastr.error("Cập nhật mật khẩu thất bại");
+        })
+})
+
+// Ẩn hiện password
+const btns = document.querySelectorAll('#form-update-password span.input-group-text');
+const passwordEls = document.querySelectorAll('#form-update-password input[type="password"]');
+btns.forEach((btn, index) => {
+    btn.addEventListener("click", () => {
+        const passwordEl = passwordEls[index];
+        if(passwordEl.type === "password") {
+            passwordEl.type = "text";
+            btn.innerHTML = '<i class="fa-regular fa-eye-slash"></i>';
+        } else {
+            passwordEl.type = "password";
+            btn.innerHTML = '<i class="fa-regular fa-eye"></i>';
+        }
+    })
+})

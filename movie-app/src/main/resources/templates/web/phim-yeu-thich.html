@@ -85,7 +85,7 @@
                 <a th:href="@{/phim/{id}/{slug} (id=${favorite.movie.id}, slug=${favorite.movie.slug})}"
                    class="text-decoration-none text-dark">
                     <div class="movie-item">
-                        <span class="delete-favorite">
+                         <span class="btn-remove-favorite" th:onclick="|removeFavorite(${favorite.movie.id}, event)|">
                             <i class="fa-solid fa-circle-xmark"></i>
                         </span>
                         <div class="movie-poster rounded overflow-hidden">
@@ -162,7 +162,21 @@
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="/web-assets/js/common.js"></script>
-<script th:if="${session.currentUser != null}" src="/web-assets/js/movie-favorite.js"></script>
+<script>
+    const removeFavorite = (movieId, event) => {
+        event.preventDefault();
 
+        axios.delete(`/api/favorites?movieId=${movieId}`)
+            .then(response => {
+                toastr.success('Đã xóa khỏi danh sách yêu thích')
+                const removedEl = document.getElementById(movieId)
+                removedEl.parentElement.removeChild(removedEl);
+            })
+            .catch(error => {
+                console.log(error)
+                toastr.error('Đã có lỗi xảy ra')
+            })
+    }
+</script>
 </body>
 </html>
