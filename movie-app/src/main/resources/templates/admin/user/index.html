@@ -1,23 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>AdminLTE 3 | Dashboard</title>
+    <link rel="stylesheet" href="/admin-assets/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="/admin-assets/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="/admin-assets/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"/>
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="/admin-assets/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="/admin-assets/fontawesome-free/css/all.min.css"/>
     <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
 
     <!-- Theme style -->
-    <link rel="stylesheet" href="/admin-assets/css/adminlte.min.css" />
+    <link rel="stylesheet" href="/admin-assets/css/adminlte.min.css"/>
     <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="/admin-assets/overlayScrollbars/css/OverlayScrollbars.min.css" />
+    <link rel="stylesheet" href="/admin-assets/overlayScrollbars/css/OverlayScrollbars.min.css"/>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -38,7 +43,8 @@
                 <a class="nav-link py-0 d-flex align-items-center" data-toggle="dropdown" href="#">
                     <div class="user-panel">
                         <div class="image">
-                            <img src="../../admin-assets/img/user2-160x160.jpg" class="img-circle border" alt="User Image">
+                            <img src="../../admin-assets/img/user2-160x160.jpg" class="img-circle border"
+                                 alt="User Image">
                         </div>
                     </div>
                 </a>
@@ -64,7 +70,7 @@
         <!-- Brand Logo -->
         <a href="./index.html" class="brand-link">
             <img src="/admin-assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-                 style="opacity: 0.8" />
+                 style="opacity: 0.8"/>
             <span class="brand-text font-weight-light">Admin</span>
         </a>
 
@@ -74,6 +80,7 @@
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
+
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-chart-pie"></i>
@@ -99,6 +106,54 @@
                                 <a href="./blog-create.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Tạo bài viết</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-chart-pie">
+                                <p>
+                                    Báo cáo
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </i>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="./blog-index.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Báo cáo hàng tháng</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-chart-pie">
+                                <p>
+                                    Phim
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </i>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="./blog-index.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Phim Lẻ</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./blog-index.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Phim Bộ</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./blog-index.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Phim Chiếu Rạp</p>
                                 </a>
                             </li>
                         </ul>
@@ -157,7 +212,7 @@
                 <div class="row py-2">
                     <div class="col-12">
                         <button type="button" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Viết bài
+                            <i class="fas fa-plus"></i> Tạo User
                         </button>
                         <button type="button" class="btn btn-info">
                             <i class="fas fa-redo"></i> Refresh
@@ -168,75 +223,36 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <table class="table table-bordered table-hover">
+                                <table class="table table-bordered table-hover" id="table-user">
                                     <thead>
                                     <tr>
-                                        <th>Tiêu đề</th>
-                                        <th>Tác giả</th>
-                                        <th>Danh mục</th>
-                                        <th>Trạng thái</th>
-                                        <th>Ngày tạo</th>
+                                        <th>Avatar</th>
+                                        <th>Họ Tên</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
+                                    <tr th:each="user : ${users}">
                                         <td>
-                                            <a href="./blog-detail.html">Khai giảng khóa
-                                                Java Spring Boot 12A
-                                                - song song 2 hình
-                                                thức offline /
-                                                online đáp ứng nhu
-                                                cầu đào tạo từ xa</a>
+                                            <img th:src="${user.avatar}" alt="" width="100" height="100">
                                         </td>
                                         <td>
-                                            <a href="#">John Doe</a>
+                                            <a th:href="@{/admin/users/{id}/detail (id=${user.id})}"
+                                               th:text="${user.name}"
+                                            ></a>
                                         </td>
                                         <td>
-                                            Java, Golang, Springboot
+                                            <p th:text="${user.email}"></p>
                                         </td>
-                                        <td>Công khai</td>
-                                        <td>06-07-2022</td>
+                                        <td>
+                                            <p th:text="${user.type}"></p>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
 
-                                <div class="d-flex justify-content-center mt-3" id="pagination">
-                                    <ul class="pagination mb-0">
-                                        <li class="paginate_button page-item previous disabled"
-                                            id="example2_previous">
-                                            <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0"
-                                               class="page-link">Previous</a>
-                                        </li>
-                                        <li class="paginate_button page-item active">
-                                            <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0"
-                                               class="page-link">1</a>
-                                        </li>
-                                        <li class="paginate_button page-item">
-                                            <a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0"
-                                               class="page-link">2</a>
-                                        </li>
-                                        <li class="paginate_button page-item">
-                                            <a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0"
-                                               class="page-link">3</a>
-                                        </li>
-                                        <li class="paginate_button page-item">
-                                            <a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0"
-                                               class="page-link">4</a>
-                                        </li>
-                                        <li class="paginate_button page-item">
-                                            <a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0"
-                                               class="page-link">5</a>
-                                        </li>
-                                        <li class="paginate_button page-item">
-                                            <a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0"
-                                               class="page-link">6</a>
-                                        </li>
-                                        <li class="paginate_button page-item next" id="example2_next">
-                                            <a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0"
-                                               class="page-link">Next</a>
-                                        </li>
-                                    </ul>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -246,8 +262,16 @@
     </div>
 </div>
 
-<!-- jQuery -->
+// Jquery luôn phải để trên đầu
 <script src="/admin-assets/jquery/jquery.min.js"></script>
+
+<script src="/admin-assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/admin-assets/datatables/jquery.dataTables.min.js"></script>
+<script src="/admin-assets/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/admin-assets/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/admin-assets/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/admin-assets/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/admin-assets/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
 
 <!-- Bootstrap 4 -->
 <script src="/admin-assets/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -256,6 +280,19 @@
 <script src="/admin-assets/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/admin-assets/js/adminlte.js"></script>
+
+<script>
+    $('#table-user').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+    });
+
+</script>
 </body>
 
 </html>

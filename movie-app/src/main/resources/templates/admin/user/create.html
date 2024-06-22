@@ -11,6 +11,9 @@
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="/admin-assets/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+          integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
     <!-- Theme style -->
     <link rel="stylesheet" href="/admin-assets/css/adminlte.min.css" />
@@ -20,8 +23,8 @@
     <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css" />
 
-    <link rel="stylesheet" href="./admin-assets/select2/css/select2.min.css" />
-    <link rel="stylesheet" href="./admin-assets/css/style.css">
+    <link rel="stylesheet" href="/admin-assets/select2/css/select2.min.css" />
+    <link rel="stylesheet" href="/admin-assets/css/style.css">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -151,7 +154,7 @@
                                 <a href="#">Blog</a>
                             </li>
                             <li class="breadcrumb-item active">
-                                Tạo bài viết
+                                User create
                             </li>
                         </ol>
                     </div>
@@ -167,17 +170,8 @@
                         <button type="button" class="btn btn-default">
                             <i class="fas fa-chevron-left"></i> Quay lại
                         </button>
-                        <button type="button" class="btn btn-info px-4">
+                        <button type="button" class="btn btn-info px-4" id="btn-create">
                             Lưu
-                        </button>
-                        <button type="button" class="btn btn-primary px-4">
-                            Preview
-                        </button>
-                    </div>
-
-                    <div class="col-6 d-flex justify-content-end">
-                        <button type="button" class="btn btn-danger px-4">
-                            Xóa
                         </button>
                     </div>
                 </div>
@@ -187,71 +181,29 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-12">
                                         <div class="form-group">
-                                            <label>Tiêu đề</label>
-                                            <input type="text" class="form-control" id="title" />
+                                            <p class="text-muted font-italic">Mật khẩu mặc định : <span class="font-weight-bold">123</span></p>
                                         </div>
+                                        <form id="form-create-user" novalidate="novalidate">
+                                            <div class="form-group">
+                                                <label>Họ tên</label>
+                                                <input type="text" class="form-control" id="name" name="name">
+                                            </div>
 
-                                        <div class="form-group">
-                                            <label>Nội dung</label>
-                                            <textarea id="content"></textarea>
-                                        </div>
+                                            <div class="form-group">
+                                                <label>Email</label>
+                                                <input type="text" class="form-control" id="email" name="email">
+                                            </div>
 
-                                        <div class="form-group">
-                                            <label>Mô tả ngắn</label>
-                                            <textarea id="description" class="form-control" rows="3"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label>Trạng thái</label>
-                                            <select id="status" class="form-control">
-                                                <option value="0">
-                                                    Nháp
-                                                </option>
-                                                <option value="1">
-                                                    Công khai
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Danh mục</label>
-                                            <div class="select2-purple">
-                                                <select class="select2 form-control" multiple="multiple" id="category">
-                                                    <option>
-                                                        Java
-                                                    </option>
-                                                    <option>
-                                                        Golang
-                                                    </option>
-                                                    <option>
-                                                        React
-                                                    </option>
-                                                    <option>
-                                                        Lập trình web
-                                                    </option>
-                                                    <option>
-                                                        Database
-                                                    </option>
-                                                    <option>
-                                                        Tips Trick
-                                                    </option>
-                                                    <option>
-                                                        Devops
-                                                    </option>
+                                            <div class="form-group">
+                                                <label>Role</label>
+                                                <select class="form-select form-control" id="role" name="role">
+                                                    <option value="USER" selected="">USER</option>
+                                                    <option value="ADMIN">ADMIN</option>
                                                 </select>
                                             </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="thumbnail-preview-container mb-3">
-                                                <img src="" alt="" id="thumbnail" />
-                                            </div>
-                                            <button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modal-xl">
-                                                Chọn hình ảnh
-                                            </button>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -289,35 +241,87 @@
 
 <!-- jQuery -->
 <script src="/admin-assets/jquery/jquery.min.js"></script>
-
-<!-- Bootstrap 4 -->
 <script src="/admin-assets/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- overlayScrollbars -->
 <script src="/admin-assets/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 
-<!-- AdminLTE App -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"
+        integrity="sha512-WMEKGZ7L5LWgaPeJtw9MBM4i5w5OSBlSjTjCtSnvFJGSVD26gE5+Td12qN5pvWXhuWaWcVwF++F7aqu9cvqP0A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/additional-methods.min.js"
+        integrity="sha512-TiQST7x/0aMjgVTcep29gi+q5Lk5gVTUPE9XgN0g96rwtjEjLpod4mlBRKWHeBcvGBAEvJBmfDqh2hfMMmg+5A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script src="/admin-assets/js/adminlte.js"></script>
+<script src="/web-assets/js/common.js"></script>
 
-<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
-
-<script src="/admin-assets/select2/js/select2.full.min.js"></script>
 
 <script>
-    //Initialize Select2 Elements
-    $(".select2").select2();
-
-    // Initialize editor
-    const easyMDE = new EasyMDE({
-        element: document.getElementById("content"),
-        spellChecker: false,
-        maxHeight: "500px",
-        renderingConfig: {
-            codeSyntaxHighlighting: true,
+    $('#form-create-user ').validate({
+        rules: {
+            name: {
+                required: true
+            },
+            email:{
+                require: true,
+                email: true
+            },
+            role:{
+                require: true
+            }
         },
+        messages: {
+            name: {
+                required: "Tên user không được để trống"
+            },
+            email:{
+                require : "Email không được để trống",
+                email :"Email không đúng định dạng"
+            },
+            role: {
+                require : "Role không đươợc để trống"
+            }
+        },
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass('is-invalid');
+        }
     });
+
+    const btnCreate = document.getElementById('btn-create');
+    const nameEl = document.getElementById('name');
+    const emailEL = document.getElementById('email')
+    const roleEl = document.getElementById('role')
+    btnCreate.addEventListener('click', () => {
+        if (!$('#form-create-user ').valid()) return;
+
+        const data = {
+            name: nameEl.value,
+            email:emailEL.value,
+            role:roleEl.value
+        }
+        axios.postt("/api/admin/users", data)
+            .then(res => {
+                toastr.success("Tạo user thành công");
+                setTimeout(()=>{
+                    window.location.href = `/admin/users/${res.data.id}/detail`;
+                },1500)
+            })
+            .catch(err => {
+                toastr.error(err.response.data.messages);
+            })
+    })
+
 </script>
 </body>
 
