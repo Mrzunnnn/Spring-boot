@@ -71,14 +71,14 @@ public class userService {
         return userRespository.save(user);
     }
 
-    public User resetPassword(Integer id ){
-        User user = userRespository.findById(id).orElse(null);
-        user.setPassword(passwordEncoder.encode("123"));
+    public User resetPassword(Integer id,ResetPasswordRequest request ){
+        User user = userRespository.findById(id).orElseThrow();
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         return userRespository.save(user);
     }
 
     public User updateProfile(Integer id,UpsertUserRequest request){
-        User user = userRespository.findById(id).orElse(null);
+        User user = userRespository.findById(id).orElseThrow();
         user.setName(request.getName());
         user.setType(request.getType());
         return userRespository.save(user);

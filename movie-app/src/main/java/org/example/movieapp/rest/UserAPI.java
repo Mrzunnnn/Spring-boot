@@ -28,14 +28,14 @@ public class UserAPI {
       return ResponseEntity.ok(user);
     }
 
-    @PutMapping("/admin/users")
+    @PostMapping("/admin/users")
     public ResponseEntity<?> createUser(@Valid @RequestBody UpsertUserRequest request){
         return ResponseEntity.ok(userService.createUser(request));
     }
 
     @PostMapping("/admin/users/{id}/reset-password")
     public ResponseEntity<?> resetPassword(@Valid @PathVariable Integer id, @RequestBody ResetPasswordRequest request){
-        return ResponseEntity.ok(userService.resetPassword(id));
+        return ResponseEntity.ok(userService.resetPassword(id,request));
     }
     @PutMapping("/admin/users/{id}")
     ResponseEntity<?> adminUpdateProfile( @Valid @RequestBody UpsertUserRequest request,
