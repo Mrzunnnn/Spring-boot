@@ -1,5 +1,6 @@
 package org.example.movieapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -73,4 +74,12 @@ public class Movie {
             inverseJoinColumns = @JoinColumn(name = "director_id")
     )
     private List<Director> directors;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL)
+    List<Review> reviews;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL)
+    List<Episode> episodes;
 }

@@ -334,7 +334,7 @@
             email : emailEL.value,
             role:roleEl.value
         }
-        axios.put("/api/admin/users/{id}",data)
+        axios.put(`/api/admin/users/${user.id}`,data)
             .then(res =>{
                 toastr.success("Update thành công");
             })
@@ -348,7 +348,7 @@
             password : 123
         }
 
-        axios.post("/api/admin/users/{id}/reset-password", data)
+        axios.post(`/api/admin/users/${user.id}/reset-password`, data)
             .then(res => {
                 toastr.success("Reset mật khẩu thành công");
 

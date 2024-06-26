@@ -1,12 +1,11 @@
 package org.example.movieapp.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.movieapp.entity.Episode;
 import org.example.movieapp.entity.Movie;
 import org.example.movieapp.entity.User;
-import org.example.movieapp.repository.ActorRespository;
-import org.example.movieapp.repository.CountryRespository;
-import org.example.movieapp.repository.DirectorRespository;
-import org.example.movieapp.repository.GenreRespository;
+import org.example.movieapp.repository.*;
+import org.example.movieapp.servive.EpisodeService;
 import org.example.movieapp.servive.MovieService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +23,8 @@ public class MovieController {
     private final CountryRespository countryRespository;
     private final ActorRespository actorRespository;
     private final GenreRespository genreRespository;
+    private final EpisodeRespository episodeRespository;
+    private final EpisodeService episodeService;
 
     @GetMapping("/admin/movie")
     public String users(Model model) {
@@ -48,6 +49,7 @@ public class MovieController {
         model.addAttribute("actors", actorRespository.findAll());
         model.addAttribute("countries", countryRespository.findAll());
         model.addAttribute("genres", genreRespository.findAll());
+        model.addAttribute("episodes",episodeService.getEpisodeListOfMovieByAdmin(id));
         return "admin/movie/detail";
     }
 
